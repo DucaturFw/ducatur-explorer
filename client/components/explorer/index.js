@@ -1,42 +1,73 @@
-import React from "react";
+import React,{Fragment} from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import styled from 'styled-components';
 import {BootstrapTable,TableHeaderColumn} from 'react-bootstrap-table';
+ import PieChart from "react-svg-piechart" ;
 import {fetchHolders} from '../../actions/explorer';
+import Preloader from '../preloader/index';
 
  class Explorer extends React.Component {
-
-
+  
 	componentDidMount(){
-      
+      this.props.fetchHolders();
 	}
 
 	
 	render() {
-       const { fetchHolders, tokenarray} = this.props;
+     
+       const { fetchHolders,preloader,tokenarray,diagram} = this.props;
 		return( <Container>
 			<Title>Holders</Title>
-			<button onClick={fetchHolders}> </button>
-            <BootstrapTable data={  tokenarray }>
-        <TableHeaderColumn dataField='address' isKey>Address</TableHeaderColumn>
-        <TableHeaderColumn dataField='token'>Token</TableHeaderColumn>
-        <TableHeaderColumn dataField='tokenprocent'>%</TableHeaderColumn>
-      </BootstrapTable>
+             
+            {(preloader===true)?this.renderPreloader():this.renderExplorer(tokenarray,diagram)}
+     
 		</Container>);
-	}
+    }
+    renderExplorer(tokenarray=[],diagram=[]){
+        // const data = [
+        //     {title: "Data 1", value: 100, color: "#22594e"},
+        //     {title: "Data 2", value: 60, color: "#2f7d6d"},
+        //     {title: "Data 3", value: 30, color: "#3da18d"},
+        //     {title: "Data 4", value: 20, color: "#69c2b0"},
+        //     {title: "Data 5", value: 10, color: "#a1d9ce"},
+        //   ]
+     
+        return(
+            
+            <Fragment>
+                <DiagramContainer>
+        <PieChart
+        data={diagram}
+    
+        // If you need expand on hover (or touch) effect
+        expandOnHover
+        // If you need custom behavior when sector is hovered (or touched)
+        />
+        </DiagramContainer>
+        <BootstrapTable data={ tokenarray}>
+        <TableHeaderColumn dataField='address' width="200px" isKey>Address</TableHeaderColumn>
+        <TableHeaderColumn dataField='token'>Token</TableHeaderColumn>
+        <TableHeaderColumn dataField='tokenprocent'>Percent</TableHeaderColumn>
+      </BootstrapTable>
+      </Fragment>);
+    }
+    renderPreloader(){
+       return    <Preloader />
+    }
 }
  const mapDispatchtoProps=(dispatch)=>{
-
-bindActionCreators({fetchHolders},dispatch)
+return bindActionCreators({fetchHolders},dispatch);
 }
 const mapStateToProps =(state)=>{
     return {
-    tokenarray:state.explorer
+    tokenarray:state.explorer.tokens,
+    preloader:state.explorer.preloader,
+    diagram:state.explorer.diagram
     };
 }
 
-export default connect(mapDispatchtoProps,mapStateToProps)(Explorer);
+export default connect(mapStateToProps,mapDispatchtoProps)(Explorer);
 
 let Container = styled.div`
 	width: 100%;
@@ -94,4 +125,8 @@ const Btn = styled.button`
     // color: white;
     border-radius: 0;
     padding: 10px 50px;
+`;
+const DiagramContainer = styled.div`
+width:300px;
+height:300px;
 `;

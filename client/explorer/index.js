@@ -11,7 +11,14 @@ export default {
   init: function () {
     localWeb3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io'));
       contractInstance = new localWeb3.eth.Contract(abi, contractAddress);
-      console.log("Contract methods: ", contractInstance.methods);
-      console.log("Contract events: ", contractInstance.events);
+     return contractInstance.getPastEvents('Transfer', {
+        fromBlock: 0,
+        toBlock: 'latest'
+      }, function(error, events){
+      //  let result = events.map(item=>item.returnValues);
+
+      //  return result;
+        
+    });
   }
 }
