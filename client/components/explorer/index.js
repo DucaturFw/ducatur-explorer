@@ -46,7 +46,7 @@ import Preloader from '../preloader/index';
         />
         </DiagramContainer>
         <BootstrapTable data={ tokenarray}>
-        <TableHeaderColumn dataField='address' width="200px" isKey>Address</TableHeaderColumn>
+        <TableHeaderColumn dataField='address' width="450px" isKey>Address</TableHeaderColumn>
         <TableHeaderColumn dataField='token'>Token</TableHeaderColumn>
         <TableHeaderColumn dataField='tokenprocent'>Percent</TableHeaderColumn>
       </BootstrapTable>
