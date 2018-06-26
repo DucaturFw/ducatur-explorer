@@ -7,8 +7,6 @@ import { configureStore } from './store';
 
 
 const store = configureStore();
-window.store =store;
-
 render(
   <Provider store={store}>
     <App />

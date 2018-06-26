@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node bin/index.js",
     "start:back": "node server/dev.js",
+    "start:all":"node bin/index.js && node server/dev.js",
     "build": "node bin/build.js",
     "serve": "node server",
     "prod": "npm run build && npm run serve",
@@ -52,6 +53,7 @@
     "mongodb": "^3.0.10",
     "nunjucks": "^3.1.2",
     "object-assign": "^4.1.1",
+    "pg-promise": "^8.4.4",
     "postcss": "^6.0.20",
     "postcss-flexbugs-fixes": "^3.3.0",
     "postcss-loader": "^2.1.2",

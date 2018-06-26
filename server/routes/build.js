@@ -19,4 +19,4 @@ module.exports = server => {
       return h.view('index');
     }
   });
-};
+}
