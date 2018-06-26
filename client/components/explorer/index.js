@@ -38,9 +38,9 @@ import Preloader from '../preloader/index';
         />
         </DiagramContainer>
         <BootstrapTable data={ tokenarray}>
-        <TableHeaderColumn dataField='address'  isKey>Address</TableHeaderColumn>
-        <TableHeaderColumn dataField='token'>Token</TableHeaderColumn>
-        <TableHeaderColumn dataField='percent'>Percent</TableHeaderColumn>
+        <TableHeaderColumn dataField='address' dataSort={ true }  isKey>Address</TableHeaderColumn>
+        <TableHeaderColumn dataField='token' dataSort={ true } >Token</TableHeaderColumn>
+        <TableHeaderColumn dataField='percent' dataSort={ true }>Percent</TableHeaderColumn>
       </BootstrapTable>
       </Fragment>);
     }

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node bin/index.js",
     "start:back": "node server/dev.js",
-    "start:all":"node bin/index.js && node server/dev.js",
+    "start:all":"npm run start  | npm run start:back ",
     "build": "node bin/build.js",
     "serve": "node server",
     "prod": "npm run build && npm run serve",
