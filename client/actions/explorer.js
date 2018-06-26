@@ -6,58 +6,57 @@ export function fetchHolders (){
     return(dispatch)=>{
         dispatch({type:FETCH_HOLDERS_START})
 
+        let resultTable =
+        {'0x0000000000000000000000000000000000000000':7000000000};
+        let resultTokens =[];
+        let resultDiagram =[];
+        let allSumTokens = 0;
+        function addBalance(addr, amount)
+        {
+           (!resultTable[addr])? resultTable[addr] = amount :   resultTable[addr] += amount
+        
+        }
+        
+        function reduceBalance(addr, amount){ 
+            (!resultTable[addr])? resultTable[addr] = 0 :   resultTable[addr] -= amount
+         }
      Wallet.init().then(res=>{
          
-         let resultTable =[
-            {address:'0x0000000000000000000000000000000000000000',
-            token:7000000000
-           }  
-         ];
+       
 
-         let resultDiagram=[];
          let values = res.map(item=>item.returnValues);
-             values.forEach( function(item){ Math.round( item.value / 1000000000000000000)});
+             values.forEach( (item)=>{ item.value = Math.round(Number (item.value) / 1000000000000000000)});
          console.log(values);
-         values.forEach(function(item,index){
-            resultTable.push({
-               address:item.to,
-               token: item.value 
-           })
-     let indexadr =   _.findIndex(resultTable,el=>el.address===item.from);
-     resultTable[indexadr].token = (resultTable[indexadr].token - item.value)
+         values.forEach((item,index)=>{
+            addBalance(item.to,item.value);
+            reduceBalance(item.from,item.value);
+   
+             }    
+        )
+            
+                          //allsumtoken
+                          resultTable['0x0000000000000000000000000000000000000000'] =0;
+                          for (let item in resultTable){
+                              allSumTokens+=resultTable[item]
+                          }
 
-        //    resultDiagram.push({
-        //     title:item.to,
-        //    value:10,
-        //    color:getRandomRgb(),
-        //    token: item.value 
-        // })
-          
-        })
-
-
-        // const sum = _.sum(resultTable.map(item=>item.token))
-           
-        // const tokens = resultTable.map((item)=>{
-        //     return {
-        //        address:item.address,
-        //        token:item.token,
-        //        percent: (item.token /sum *100).toFixed(2)
-        //     }
-        // })
-        // const diagram = resultDiagram.map((item)=>{
-        //     return{
-        //     title:item.title,
-        //    value:Number((item.token /sum *100).toFixed(2)),
-        //    color:item.color,
-
-        //     }
-        // })
+            for (let item in resultTable){
+                resultTokens.push({
+                address:item,
+               token:resultTable[item],
+              percent: (resultTable[item] /allSumTokens*100).toFixed(4)
+                })
+                resultDiagram.push({
+                    title:item,
+            value:Number((resultTable[item] /allSumTokens*100).toFixed(4)),
+            color: getRandomRgb()
+                })
+            }
 
 
 
          console.log(resultTable);
-//dispatch({type:FETCH_HOLDERS_SUCCESS,payload:tokens,diagram:diagram})
+dispatch({type:FETCH_HOLDERS_SUCCESS,payload:resultTokens,diagram:resultDiagram})
           
 }).catch(error=>{ 
                    console.log(error);
